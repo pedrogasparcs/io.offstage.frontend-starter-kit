@@ -1,0 +1,23 @@
+{
+  "name": "net.off-stage.remotecontroller",
+  "version": "1.0.0",
+  "description": "Remote Controller Application for Off-Stage Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "react",
+    "babel",
+    "es6",
+    "off-stage",
+    "remote",
+    "controller"
+  ],
+  "author": "Pedro Gaspar",
+  "license": "ISC",
+  "repository": "https://github.com/pedrogasparcs/net.off-stage.remotecontroller.git",
+  "devDependencies": {
+    "webpack": "^1.13.1"
+  }
+}
