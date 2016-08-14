@@ -32,11 +32,11 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 function getEntrySources(sources) {
-    if (process.env.NODE_ENV !== 'production') {
-        sources.push('webpack-dev-server/client?http://localhost:8081');
-        sources.push('webpack/hot/only-dev-server');
-    }
-    return sources;
+  if (process.env.NODE_ENV !== 'production') {
+    sources.push('webpack-dev-server/client?http://localhost:8081');
+    sources.push('webpack/hot/only-dev-server');
+  }
+  return sources;
 }
 
 module.exports = {
@@ -53,27 +53,38 @@ module.exports = {
   },
   output: {
     // with publicPath configured index.html can call the same path for the js and dev-server will take precedence when running
-    publicPath: "/js/",
-    path: path.resolve(__dirname, "../build/js/"),
-    filename: '[name].js'
+    publicPath: "/",
+    path: path.resolve(__dirname, "../build"),
+    filename: 'js/[name].js'
   },
   module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                loaders: ['react-hot-loader', 'jsx-loader', 'babel-loader'],
-                exclude: /node_modules/
-            },
-            {
-                test: /\.sass$/,
-                loader: process.env.NODE_ENV !== 'production'?'style-loader!css-loader!sass-loader':ExtractTextPlugin.extract('css!sass')
-            }
-        ]
-    },
-    plugins: [
-        new ExtractTextPlugin('../css/style.css', {
-            allChunks: true
-        }),
-        new HtmlWebpackPlugin()
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['react-hot-loader', 'jsx-loader', 'babel-loader'],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.sass$/,
+        loader: process.env.NODE_ENV !== 'production'?'style-loader!css-loader!sass-loader':ExtractTextPlugin.extract('css!sass')
+      }
     ]
+  },
+  plugins: [
+    new ExtractTextPlugin('css/style.css', {
+      allChunks: true
+    }),
+    new HtmlWebpackPlugin({
+      xhtml: true,
+      title: 'Custom template',
+      template: path.resolve(__dirname, 'ejs/remotecontroller.ejs'), // Load a custom template (ejs by default see the html-webpack-plugin -> FAQ for details)
+      chunks: ['remotecontroller'],
+      environment: process.env.NODE_ENV !== "production"?"dev":"",
+    })
+  ]/* if configured access each inside project like e.g. let Strings = require('Strings');
+  ,
+  externals: {
+      'Config': JSON.stringify(require('./config.json')),
+      'Strings': JSON.stringify(require('./strings.json'))
+  }*/
 };

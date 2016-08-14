@@ -6,6 +6,6 @@ import ReactDOM from 'react-dom';
 import HelloForm from './Components/HelloForm';
 
 ReactDOM.render(
-  <HelloForm />,
+  <HelloForm/>,
   document.getElementById('remotecontroller')
 );
