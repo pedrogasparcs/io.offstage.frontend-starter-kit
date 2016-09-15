@@ -4,8 +4,6 @@ import React, {Component} from 'react';
 
 import HelloSayer from './HelloSayer';
 
-import s from './../../sass/remotecontroller.sass';
-
 class HelloForm extends Component {
   constructor (props) {
     super (props);

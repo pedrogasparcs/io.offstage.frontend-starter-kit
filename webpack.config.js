@@ -41,8 +41,8 @@ function getEntrySources(sources) {
 
 module.exports = {
   entry: {
-    remotecontroller: getEntrySources([
-      './src/js/remotecontroller.js'
+    index: getEntrySources([
+      './src/js/index.js'
     ])
     /*
     **** add one entry for each js file you want as a separate resource ****
@@ -54,7 +54,7 @@ module.exports = {
   output: {
     // with publicPath configured index.html can call the same path for the js and dev-server will take precedence when running
     publicPath: "/",
-    path: path.resolve(__dirname, "../build"),
+    path: path.resolve(__dirname, "build"),
     filename: 'js/[name].js'
   },
   module: {
@@ -77,9 +77,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       xhtml: true,
       title: 'Custom template',
-      template: path.resolve(__dirname, 'ejs/remotecontroller.ejs'), // Load a custom template (ejs by default see the html-webpack-plugin -> FAQ for details)
-      chunks: ['remotecontroller'],
+      filename: 'index.html',
+      template: path.resolve(__dirname, 'src/ejs/index.ejs'), // Load a custom template (ejs by default see the html-webpack-plugin -> FAQ for details)
+      chunks: ['index'],
       environment: process.env.NODE_ENV !== "production"?"dev":"",
+      files: {
+        "css": process.env.NODE_ENV === 'production'? [ "style.css" ] : []
+      }
     })
   ]/* if configured access each inside project like e.g. let Strings = require('Strings');
   ,
