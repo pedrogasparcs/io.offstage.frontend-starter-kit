@@ -38,20 +38,20 @@
 
  */
 
-var webpack = require("webpack");
-var path = require("path");
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpack = require('webpack')
+var path = require('path')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
-function getEntrySources(sources) {
+function getEntrySources (sources) {
   if (process.env.NODE_ENV !== 'production') {
-    sources.push('webpack-dev-server/client?http://localhost:8081');
-    sources.push('webpack/hot/only-dev-server');
+    sources.push('webpack-dev-server/client?http://localhost:8081')
+    sources.push('webpack/hot/only-dev-server')
   }
-  return sources;
+  return sources
 }
 
-module.exports = {
+let webpackConfig = {
   entry: {
     index: getEntrySources([
       'babel-polyfill',
@@ -60,20 +60,24 @@ module.exports = {
   },
   output: {
     // with publicPath configured index.html can call the same path for the js and dev-server will take precedence when running
-    publicPath: "/",
-    path: path.resolve(__dirname, "build"),
+    publicPath: '/',
+    path: path.resolve(__dirname, 'build'),
     filename: 'js/[name].js'
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ['react-hot-loader', 'jsx-loader', 'babel-loader'],
+        loaders: [
+          'react-hot-loader',
+          'jsx-loader',
+          'babel-loader'
+        ],
         exclude: /node_modules/
       },
       {
-        test: /\.sass$/,
-        loader: process.env.NODE_ENV !== 'production'?'style-loader!css-loader!sass-loader':ExtractTextPlugin.extract('css!sass')
+        test: /\.(sass|scss)$/,
+        loader: process.env.NODE_ENV !== 'production' ? 'style-loader!css-loader!sass-loader' : ExtractTextPlugin.extract('css!sass')
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -123,19 +127,14 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, 'src/ejs/index.ejs'), // Load a custom template (ejs by default see the html-webpack-plugin -> FAQ for details)
       chunks: ['index'],
-      environment: process.env.NODE_ENV !== "production"?"dev":"",
+      environment: process.env.NODE_ENV !== 'production' ? 'dev' : '',
       files: {
-        "css": process.env.NODE_ENV === 'production'? [ "style.css" ] : []
+        'css': process.env.NODE_ENV === 'production' ? [ 'style.css' ] : []
       }
     }),
     new webpack.DefinePlugin({
-      'process.env':{
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress:{
-        warnings: true
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       }
     })
   ]/* if configured access each inside project like e.g. let Strings = require('Strings');
@@ -143,5 +142,19 @@ module.exports = {
    externals: {
    'Config': JSON.stringify(require('./config.json')),
    'Strings': JSON.stringify(require('./strings.json'))
-   }*/
-};
+   } */
+}
+
+
+if (process.env.NODE_ENV === "production") {
+  webpackConfig.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: true
+      },
+      sourceMap: true
+    })
+  )
+}
+
+module.exports = webpackConfig

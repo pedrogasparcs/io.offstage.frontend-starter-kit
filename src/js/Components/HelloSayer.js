@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-import React from 'react';
+import React from 'react'
 
 class HelloSayer extends React.Component {
-    render() {
-        return <p>Hello {this.props.name}</p>;
-    }
+  render () {
+    return <p>Hello {this.props.name}</p>
+  }
 }
 
-export default HelloSayer;
+export default HelloSayer
